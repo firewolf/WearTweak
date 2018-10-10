@@ -1,0 +1,13 @@
+<resources>
+    <string name="title">Screen Timeout</string>
+    <string name="enable">Enable</string>
+    <string-array name="timeout_array">
+        <item>5</item>
+        <item>20</item>
+        <item>40</item>
+        <item>60</item>
+        <item>120</item>
+        <item>240</item>
+        <item>480</item>
+    </string-array>
+</resources>
