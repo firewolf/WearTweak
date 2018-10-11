@@ -7,15 +7,29 @@ import android.widget.Toast;
 
 public class DisplayActionListener implements DisplayManager.DisplayListener {
 
+    private int timeout = 5 * 1000;
+
+    private String [] state2String = {
+            "UNKNOWN",
+            "OFF",
+            "ON",
+            "DOZE",
+            "DOZE_SUSPEND",
+            "VR",
+            "ON_SUSPEND"
+    };
+
     /**
      *
      * @var WakeManager
      */
-    WakeManager wakeManager;
+    private WakeManager wakeManager;
 
-    DisplayManager displayManager;
-
-    private int timeout = 5 * 1000;
+    /**
+     *
+     * @var DisplayManager
+     */
+    private DisplayManager displayManager;
 
     /**
      *
@@ -48,20 +62,12 @@ public class DisplayActionListener implements DisplayManager.DisplayListener {
     }
 
     public void setTimeout(int timeout) {
+
         this.timeout = timeout;
     }
 
     private void printState (int state, String msg) {
+
         System.out.println ("---AAA-----[" + msg + "] -- [" + state2String [state] + "] --- [" + state + "] --AAA---");
     }
-
-    private String [] state2String = {
-            "UNKNOWN",
-            "OFF",
-            "ON",
-            "DOZE",
-            "DOZE_SUSPEND",
-            "VR",
-            "ON_SUSPEND"
-    };
 }

@@ -25,7 +25,7 @@ public class WakeManager {
     public void wakeLock (long timeout) {
 
         if (wakeLock != null && wakeLock.isHeld()) {
-            releaseLock();
+            this.releaseLock();
         }
 
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, this.tag);
