@@ -17,15 +17,9 @@ import android.widget.Toast;
 
 public class MainActivity extends WearableActivity {
 
-    private Switch switch1;
+    private int defaultRadioSelected = R.id.radioButton5;
 
-    private boolean switch1isChecked = false;
-
-    private int spinnerPos = 0;
-
-    private DisplayManager displayManager;
-
-    private DisplayActionListener displayActionListener;
+    private boolean defaultSwitch1Checked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,78 +38,24 @@ public class MainActivity extends WearableActivity {
 
     private void onSelfCreate () {
 
-//        startService(
-//                new Intent(
-//                        this,
-//                        ScreenTimeoutIntentService.class
-//                )
-//        );
+        //startService(new Intent(this, ScreenTimeoutIntentService.class));
 
-        displayInit ();
-        switchInit ();
-        radioGroupInit ();
-        //spinnerInit ();
-    }
+        PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        WakeManager wakeManager = new WakeManager(powerManager);
 
-    private void displayInit () {
+        //DisplayActionListener displayActionListener =
+        new DisplayActionListener(this, wakeManager);
 
-        displayManager = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
-        displayActionListener = new DisplayActionListener((PowerManager) getSystemService(Context.POWER_SERVICE), displayManager);
-        displayManager.registerDisplayListener(displayActionListener, null);
-    }
+        SwitchManager switchManager = new SwitchManager(this, this.defaultSwitch1Checked);
+        switchManager.addObserver(new SwitchObserver(wakeManager));
 
-    private void switchInit () {
+        RadioButtonsManager radioButtonsManager = new RadioButtonsManager(this, this.defaultRadioSelected);
+        radioButtonsManager.addObserver(new RadioButtonsObserver(wakeManager));
 
-        switch1 = findViewById(R.id.switch1);
-        switch1.setChecked(switch1isChecked);
-        switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                switch1isChecked = isChecked;
-            }
-        });
-    }
-
-    private void radioGroupInit () {
-
-        final MainActivity ma = this;
-        RadioGroup radioGroup = findViewById (R.id.radioGroup1);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Toast.makeText(ma, "checkedId: [" + checkedId + "]", Toast.LENGTH_SHORT);
-            }
-        });
-    }
-
-//    private void spinnerInit () {
-//
-//        final String [] spinnerValues = getResources().getStringArray(R.array.timeout_array);
-//        Spinner spinner = findViewById(R.id.spinner);
-//        spinner.setSelection (spinnerPos, false);
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-//                R.array.timeout_array, android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);// Specify the layout to use when the list of choices appears
-//        spinner.setAdapter(adapter);// Apply the adapter to the spinner
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener () {
-//
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                displayActionListener.setTimeout (Integer.parseInt (spinnerValues [position]) * 1000);
-//                spinnerPos = position;
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {}
-//        });
-//    }
-
-    private boolean getSwitch1 () {
-        return switch1.isChecked();
     }
 
     protected void onDestroy () {
+
         super.onDestroy();
 
         Log.d("MAIN_ACTIVITY", "onDestroy called");

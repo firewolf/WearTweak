@@ -1,5 +1,7 @@
 package tmroczkowski.weartweak;
 
+import android.app.Activity;
+import android.content.Context;
 import android.hardware.display.DisplayManager;
 import android.os.PowerManager;
 import android.view.Display;
@@ -19,29 +21,18 @@ public class DisplayActionListener implements DisplayManager.DisplayListener {
             "ON_SUSPEND"
     };
 
-    /**
-     *
-     * @var WakeManager
-     */
     private WakeManager wakeManager;
 
-    /**
-     *
-     * @var DisplayManager
-     */
     private DisplayManager displayManager;
 
-    /**
-     *
-     * @param powerManager
-     * @param displayManager
-     */
     public DisplayActionListener (
-            PowerManager powerManager,
-            DisplayManager displayManager) {
+            Activity main,
+            WakeManager wakeManager) {
 
-        this.displayManager = displayManager;
-        this.wakeManager = new WakeManager(powerManager);
+        this.displayManager = (DisplayManager) main.getSystemService(Context.DISPLAY_SERVICE);
+        this.wakeManager = wakeManager;
+
+        this.displayManager.registerDisplayListener(this, null);
     }
 
     @Override
@@ -56,9 +47,8 @@ public class DisplayActionListener implements DisplayManager.DisplayListener {
         int state = displayManager.getDisplay(displayId).getState ();
 
         if (state == Display.STATE_ON) {
-            this.wakeManager.wakeLock(timeout);
+            this.wakeManager.wakeLock();
         }
-
     }
 
     public void setTimeout(int timeout) {
@@ -68,6 +58,6 @@ public class DisplayActionListener implements DisplayManager.DisplayListener {
 
     private void printState (int state, String msg) {
 
-        System.out.println ("---AAA-----[" + msg + "] -- [" + state2String [state] + "] --- [" + state + "] --AAA---");
+        System.out.println ("--------[" + msg + "] -- [" + state2String [state] + "] --- [" + state + "] --AAA---");
     }
 }
