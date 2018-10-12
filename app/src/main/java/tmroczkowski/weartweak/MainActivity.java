@@ -1,6 +1,7 @@
 package tmroczkowski.weartweak;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.hardware.display.DisplayManager;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -17,22 +19,30 @@ import android.widget.Toast;
 
 public class MainActivity extends WearableActivity {
 
-    private Switch switch1;
+    RadioButtonsManager radioButtonsManager;
 
-    private boolean switch1isChecked = false;
-
-    private int spinnerPos = 0;
-
-    private DisplayManager displayManager;
-
-    private DisplayActionListener displayActionListener;
+    private int defaultRadioButton = R.id.radioButton5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-        onSelfCreate ();
+
+
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        defaultRadioButton = sharedPref.getInt("defaultRadioButton", defaultRadioButton);
+
+        WakeManager wakeManager = new WakeManager(this);
+
+        new DisplayActionListener(this, wakeManager);
+        radioButtonsManager = new RadioButtonsManager(this, defaultRadioButton);
+        radioButtonsManager.addObserver(new RadioButtonObserver(wakeManager));
+
+        new WIFISwitch(this);
+        new BluetoothSwitch(this);
+
         setAmbientEnabled(); // Enables Always-on
     }
 
@@ -42,83 +52,28 @@ public class MainActivity extends WearableActivity {
         super.onEnterAmbient(ambientDetails);
     }
 
-    private void onSelfCreate () {
+    private void saveData () {
 
-//        startService(
-//                new Intent(
-//                        this,
-//                        ScreenTimeoutIntentService.class
-//                )
-//        );
-
-        displayInit ();
-        switchInit ();
-        radioGroupInit ();
-        //spinnerInit ();
+        SharedPreferences.Editor editor = this.getPreferences(Context.MODE_PRIVATE).edit();
+        editor.putInt("defaultRadioButton", radioButtonsManager.getCheckedId ());
+        editor.apply ();
     }
 
-    private void displayInit () {
-
-        displayManager = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
-        displayActionListener = new DisplayActionListener((PowerManager) getSystemService(Context.POWER_SERVICE), displayManager);
-        displayManager.registerDisplayListener(displayActionListener, null);
-    }
-
-    private void switchInit () {
-
-        switch1 = findViewById(R.id.switch1);
-        switch1.setChecked(switch1isChecked);
-        switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                switch1isChecked = isChecked;
-            }
-        });
-    }
-
-    private void radioGroupInit () {
-
-        final MainActivity ma = this;
-        RadioGroup radioGroup = findViewById (R.id.radioGroup1);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Toast.makeText(ma, "checkedId: [" + checkedId + "]", Toast.LENGTH_SHORT);
-            }
-        });
-    }
-
-//    private void spinnerInit () {
-//
-//        final String [] spinnerValues = getResources().getStringArray(R.array.timeout_array);
-//        Spinner spinner = findViewById(R.id.spinner);
-//        spinner.setSelection (spinnerPos, false);
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-//                R.array.timeout_array, android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);// Specify the layout to use when the list of choices appears
-//        spinner.setAdapter(adapter);// Apply the adapter to the spinner
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener () {
-//
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                displayActionListener.setTimeout (Integer.parseInt (spinnerValues [position]) * 1000);
-//                spinnerPos = position;
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {}
-//        });
-//    }
-
-    private boolean getSwitch1 () {
-        return switch1.isChecked();
-    }
-
+    @Override
     protected void onDestroy () {
         super.onDestroy();
+        this.saveData();
+    }
 
-        Log.d("MAIN_ACTIVITY", "onDestroy called");
-        //displayManager.unregisterDisplayListener(displayActionListener);
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+
+        super.onStop();
     }
 }

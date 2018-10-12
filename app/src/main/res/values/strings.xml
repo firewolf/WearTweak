@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">Wear Tweak</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Square World!</string>
+    <string name="title">Wear Tweak</string>
+    <string name="enable">Enable</string>
+    <string name="_5">5</string>
+    <string name="_30">30</string>
+    <string name="_60">60</string>
+    <string name="wifi">WiFi</string>
+    <string name="bluetooth">BlueTooth</string>
+
 </resources>

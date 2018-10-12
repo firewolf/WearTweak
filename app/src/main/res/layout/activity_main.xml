@@ -12,9 +12,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/inner_frame_layout_padding"
+        android:paddingTop="10dp"
         android:orientation="vertical"
-        app:boxedEdges="all">
+        app:boxedEdges="left|right">
 
         <TextView
             android:layout_gravity="top|center"
@@ -23,48 +23,47 @@
             android:layout_height="wrap_content"
             android:text="@string/title" />
 
-        <Switch
-            android:id="@+id/switch1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:text="@string/enable"/>
-
         <RadioGroup
             android:id="@+id/radioGroup1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content" >
 
             <RadioButton
-                android:id="@+id/radioButton"
+                android:id="@+id/radioButton5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="5" />
+                android:text="@string/_5" />
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/radioButton30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="20" />
+                android:text="@string/_30" />
 
             <RadioButton
-                android:id="@+id/radioButton3"
+                android:id="@+id/radioButton60"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="60" />
+                android:text="@string/_60" />
 
         </RadioGroup>
 
-
-        <!-- <Spinner
-            android:id="@+id/spinner"
-            style="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar"
+        <Switch
+            android:id="@+id/switchWI"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" /> -->
+            android:layout_gravity="bottom|center"
+            android:text="@string/wifi"/>
+
+        <Switch
+            android:id="@+id/switchBT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:text="@string/bluetooth"/>
 
     </LinearLayout>
 </android.support.wear.widget.BoxInsetLayout>
