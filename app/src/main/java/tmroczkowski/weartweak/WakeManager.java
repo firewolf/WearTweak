@@ -1,8 +1,7 @@
 package tmroczkowski.weartweak;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.PowerManager;
+import android.util.Log;
 
 public class WakeManager {
 
@@ -14,8 +13,8 @@ public class WakeManager {
 
     private String tag = "ScreenTimeout::FullWakeLock";
 
-    public WakeManager (Activity activity) {
-        this.powerManager = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
+    public WakeManager (PowerManager powerManager) {
+        this.powerManager = powerManager;
     }
 
     public void wakeLock () {
@@ -25,6 +24,8 @@ public class WakeManager {
         }
 
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, this.tag);
+
+        Log.d ("WakeManager", "timeout: [" + timeout + "]");
 
         if (timeout > 0) {
             wakeLock.acquire(timeout);

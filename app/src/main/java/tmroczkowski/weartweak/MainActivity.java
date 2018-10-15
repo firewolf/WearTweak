@@ -34,23 +34,23 @@ public class MainActivity extends WearableActivity {
 
         setContentView(R.layout.activity_main);
 
-
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         defaultRadioButton = sharedPref.getInt("defaultRadioButton", defaultRadioButton);
 
-        WakeManager wakeManager = new WakeManager(this);
-
-        new DisplayActionListener(this, wakeManager);
+        //new DisplayActionListener(this, wakeManager);
         radioButtonsManager = new RadioButtonsManager(this, defaultRadioButton);
-        radioButtonsManager.addObserver(new RadioButtonObserver(wakeManager));
+        //radioButtonsManager.addObserver(new RadioButtonObserver(wakeManager));
 
         new WIFISwitch(this);
         new BluetoothSwitch(this);
 
-        //com.google.android.wearable.watchfaces.action.REQUEST_STATE
-        BroadcastReceiver broadcastReceiver = new FaceBroadcastReceiver();
-        IntentFilter intentFilter = new IntentFilter(WatchFaceService.ACTION_REQUEST_STATE);
-        this.registerReceiver(broadcastReceiver, intentFilter);
+
+//        WakeManager wakeManager = new WakeManager((PowerManager) this.getSystemService(Context.POWER_SERVICE));
+//
+//        BroadcastReceiver broadcastReceiver = new FaceBroadcastReceiver(wakeManager);
+//        IntentFilter intentFilter = new IntentFilter(WatchFaceService.ACTION_REQUEST_STATE);
+//        this.registerReceiver(broadcastReceiver, intentFilter);
+//        broadcastReceiver.goAsync();
 
         setAmbientEnabled(); // Enables Always-on
     }
@@ -70,8 +70,15 @@ public class MainActivity extends WearableActivity {
 
     @Override
     protected void onDestroy () {
-        super.onDestroy();
+
+//        Intent wearTweakService = new Intent(this, WearTweakIntentService.class);
+//        Log.d("MainActivity", "onDestroy value: [" + RadioButtonsManager.mapper.get (radioButtonsManager.getCheckedId()) + "]");
+//        wearTweakService.putExtra("timeout", RadioButtonsManager.mapper.get (radioButtonsManager.getCheckedId()));
+//
+//        startService(wearTweakService);
+
         this.saveData();
+        super.onDestroy();
     }
 
     @Override

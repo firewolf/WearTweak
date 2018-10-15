@@ -22,13 +22,14 @@ public class RadioButtonsManager extends Observable {
 
         RadioGroup radioGroup = activity.findViewById (R.id.radioGroup1);
         radioGroup.check (defaultRadioButton);
+        this.checkedId = defaultRadioButton;
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                setChanged();
-                notifyObservers(mapper.get (checkedId));
+                //setChanged();
+                //notifyObservers(mapper.get (checkedId));
                 setCheckedId(checkedId);
             }
         });
