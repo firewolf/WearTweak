@@ -16,6 +16,6 @@ public class RadioButtonsObserver implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        this.wakeManager.setTimeout (RadioButtonsManager.radioMapper.get((Integer) arg));
+        this.wakeManager.setTimeout (RadioButtonsManager.mapper.get((Integer) arg));
     }
 }
