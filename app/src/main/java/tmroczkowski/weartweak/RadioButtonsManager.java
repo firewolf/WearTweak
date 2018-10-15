@@ -7,25 +7,40 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
-import java.util.Observer;
 
 public class RadioButtonsManager extends Observable {
 
-    public static Map <Integer, Integer> radioMapper = new HashMap<Integer, Integer>() {{
-        put (R.id.radioButton5, 5 * 1000);
-        put (R.id.radioButton20, 20 * 1000);
-        put (R.id.radioButton60, 60 * 1000);
+    int checkedId;
+
+    public final static Map<Integer, Long> mapper = new HashMap<Integer, Long>() {{
+        put(R.id.radioButton5, (long) 5 * 1000);
+        put(R.id.radioButton30, (long) 30 * 1000);
+        put(R.id.radioButton60, (long) 60 * 1000);
     }};
 
-    public RadioButtonsManager (Activity main, int currentPosition) {
+    public RadioButtonsManager (Activity activity, int defaultRadioButton) {
 
-        RadioGroup radioGroup = main.findViewById (R.id.radioGroup1);
+        RadioGroup radioGroup = activity.findViewById (R.id.radioGroup1);
+        radioGroup.check (defaultRadioButton);
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                notifyObservers(checkedId);
+                setChanged();
+                notifyObservers(mapper.get (checkedId));
+                setCheckedId(checkedId);
             }
         });
+
     }
+
+    private void setCheckedId (int checkedId) {
+        this.checkedId = checkedId;
+    }
+
+    public int getCheckedId () {
+        return checkedId;
+    }
+
 }

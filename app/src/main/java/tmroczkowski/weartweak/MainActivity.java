@@ -1,6 +1,7 @@
 package tmroczkowski.weartweak;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.hardware.display.DisplayManager;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -17,16 +19,30 @@ import android.widget.Toast;
 
 public class MainActivity extends WearableActivity {
 
-    private int defaultRadioSelected = R.id.radioButton5;
+    RadioButtonsManager radioButtonsManager;
 
-    private boolean defaultSwitch1Checked = false;
+    private int defaultRadioButton = R.id.radioButton5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-        onSelfCreate ();
+
+
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        defaultRadioButton = sharedPref.getInt("defaultRadioButton", defaultRadioButton);
+
+        WakeManager wakeManager = new WakeManager(this);
+
+        new DisplayActionListener(this, wakeManager);
+        radioButtonsManager = new RadioButtonsManager(this, defaultRadioButton);
+        radioButtonsManager.addObserver(new RadioButtonObserver(wakeManager));
+
+        new WIFISwitch(this);
+        new BluetoothSwitch(this);
+
         setAmbientEnabled(); // Enables Always-on
     }
 
@@ -36,29 +52,28 @@ public class MainActivity extends WearableActivity {
         super.onEnterAmbient(ambientDetails);
     }
 
-    private void onSelfCreate () {
+    private void saveData () {
 
-        //startService(new Intent(this, ScreenTimeoutIntentService.class));
-
-        PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        WakeManager wakeManager = new WakeManager(powerManager);
-
-        //DisplayActionListener displayActionListener =
-        new DisplayActionListener(this, wakeManager);
-
-        SwitchManager switchManager = new SwitchManager(this, this.defaultSwitch1Checked);
-        switchManager.addObserver(new SwitchObserver(wakeManager));
-
-        RadioButtonsManager radioButtonsManager = new RadioButtonsManager(this, this.defaultRadioSelected);
-        radioButtonsManager.addObserver(new RadioButtonsObserver(wakeManager));
-
+        SharedPreferences.Editor editor = this.getPreferences(Context.MODE_PRIVATE).edit();
+        editor.putInt("defaultRadioButton", radioButtonsManager.getCheckedId ());
+        editor.apply ();
     }
 
+    @Override
     protected void onDestroy () {
-
         super.onDestroy();
+        this.saveData();
+    }
 
-        Log.d("MAIN_ACTIVITY", "onDestroy called");
-        //displayManager.unregisterDisplayListener(displayActionListener);
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+
+        super.onStop();
     }
 }

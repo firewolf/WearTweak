@@ -9,8 +9,6 @@ import android.widget.Toast;
 
 public class DisplayActionListener implements DisplayManager.DisplayListener {
 
-    private int timeout = 5 * 1000;
-
     private String [] state2String = {
             "UNKNOWN",
             "OFF",
@@ -21,17 +19,22 @@ public class DisplayActionListener implements DisplayManager.DisplayListener {
             "ON_SUSPEND"
     };
 
+    /**
+     *
+     * @var WakeManager
+     */
     private WakeManager wakeManager;
 
+    /**
+     *
+     * @var DisplayManager
+     */
     private DisplayManager displayManager;
 
-    public DisplayActionListener (
-            Activity main,
-            WakeManager wakeManager) {
+    public DisplayActionListener (Activity activity, WakeManager wakeManager) {
 
-        this.displayManager = (DisplayManager) main.getSystemService(Context.DISPLAY_SERVICE);
         this.wakeManager = wakeManager;
-
+        this.displayManager = (DisplayManager) activity.getSystemService(Context.DISPLAY_SERVICE);
         this.displayManager.registerDisplayListener(this, null);
     }
 
@@ -47,17 +50,13 @@ public class DisplayActionListener implements DisplayManager.DisplayListener {
         int state = displayManager.getDisplay(displayId).getState ();
 
         if (state == Display.STATE_ON) {
-            this.wakeManager.wakeLock();
+            this.wakeManager.wakeLock ();
         }
-    }
 
-    public void setTimeout(int timeout) {
-
-        this.timeout = timeout;
+        //displayManager.unregisterDisplayListener(displayActionListener);
     }
 
     private void printState (int state, String msg) {
-
         System.out.println ("--------[" + msg + "] -- [" + state2String [state] + "] --- [" + state + "] --AAA---");
     }
 }

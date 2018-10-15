@@ -1,9 +1,8 @@
 package tmroczkowski.weartweak;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.PowerManager;
-
-import java.util.Observable;
-import java.util.Observer;
 
 public class WakeManager {
 
@@ -11,34 +10,26 @@ public class WakeManager {
 
     PowerManager.WakeLock wakeLock;
 
+    long timeout;
+
     private String tag = "ScreenTimeout::FullWakeLock";
 
-    private int timeout = 5 * 1000;
-
-    boolean enabled;
-    /**
-     *
-     * @param powerManager
-     */
-    public WakeManager (PowerManager powerManager) {
-        this.powerManager = powerManager;
+    public WakeManager (Activity activity) {
+        this.powerManager = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
     }
 
     public void wakeLock () {
 
-        if (this.enabled) {
+        if (wakeLock != null && wakeLock.isHeld()) {
+            this.releaseLock();
+        }
 
-            if (wakeLock != null && wakeLock.isHeld()) {
-                this.releaseLock();
-            }
+        wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, this.tag);
 
-            wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, this.tag);
-
-            if (timeout > 0) {
-                wakeLock.acquire(timeout);
-            } else {
-                wakeLock.acquire();
-            }
+        if (timeout > 0) {
+            wakeLock.acquire(timeout);
+        } else {
+            wakeLock.acquire();
         }
     }
 
@@ -48,11 +39,7 @@ public class WakeManager {
         }
     }
 
-    public void setEnabled (boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public void setTimeout (int timeout) {
+    public void setTimeout (long timeout) {
         this.timeout = timeout;
     }
 }
