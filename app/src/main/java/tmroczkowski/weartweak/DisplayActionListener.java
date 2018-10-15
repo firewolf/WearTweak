@@ -21,13 +21,11 @@ public class DisplayActionListener implements DisplayManager.DisplayListener {
 
     /**
      *
-     * @var WakeManager
      */
     private WakeManager wakeManager;
 
     /**
      *
-     * @var DisplayManager
      */
     private DisplayManager displayManager;
 

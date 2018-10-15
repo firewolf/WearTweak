@@ -1,11 +1,15 @@
 package tmroczkowski.weartweak;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.hardware.display.DisplayManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.wearable.activity.WearableActivity;
+import android.support.wearable.watchface.WatchFaceService;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,6 +46,11 @@ public class MainActivity extends WearableActivity {
 
         new WIFISwitch(this);
         new BluetoothSwitch(this);
+
+        //com.google.android.wearable.watchfaces.action.REQUEST_STATE
+        BroadcastReceiver broadcastReceiver = new FaceBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter(WatchFaceService.ACTION_REQUEST_STATE);
+        this.registerReceiver(broadcastReceiver, intentFilter);
 
         setAmbientEnabled(); // Enables Always-on
     }
