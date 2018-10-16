@@ -8,6 +8,7 @@ import android.widget.Toast;
 public class ScreenTimeoutIntentService extends IntentService {
 
     public ScreenTimeoutIntentService () {
+
         super ("ScreenTimeoutIntentService");
     }
 
@@ -16,7 +17,7 @@ public class ScreenTimeoutIntentService extends IntentService {
         Log.d("SOME_TAG", "New intent: " + intent);
         while (true) {
             try {
-                Thread.sleep(1 * 1000);
+                Thread.sleep(2 * 1000);
                 Toast.makeText(this, "onHandleIntent", Toast.LENGTH_SHORT).show();
             } catch (InterruptedException e) {
                 e.printStackTrace();

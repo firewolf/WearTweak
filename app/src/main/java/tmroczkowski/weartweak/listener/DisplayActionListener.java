@@ -3,6 +3,7 @@ package tmroczkowski.weartweak.listener;
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.display.DisplayManager;
+import android.util.Log;
 import android.view.Display;
 
 import tmroczkowski.weartweak.service.WakeManager;
@@ -19,14 +20,8 @@ public class DisplayActionListener implements DisplayManager.DisplayListener {
             "ON_SUSPEND"
     };
 
-    /**
-     *
-     */
     private WakeManager wakeManager;
 
-    /**
-     *
-     */
     private DisplayManager displayManager;
 
     public DisplayActionListener (Activity activity, WakeManager wakeManager) {
@@ -47,14 +42,12 @@ public class DisplayActionListener implements DisplayManager.DisplayListener {
 
         int state = displayManager.getDisplay(displayId).getState ();
 
+        Log.d (this.getClass().toString(), "[" + state + "] [" + state2String [state] + "]");
+
         if (state == Display.STATE_ON) {
             this.wakeManager.wakeLock ();
         }
 
         //displayManager.unregisterDisplayListener(displayActionListener);
-    }
-
-    private void printState (int state, String msg) {
-        System.out.println ("--------[" + msg + "] -- [" + state2String [state] + "] --- [" + state + "] --AAA---");
     }
 }
