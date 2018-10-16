@@ -1,4 +1,4 @@
-package tmroczkowski.weartweak;
+package tmroczkowski.weartweak.service;
 
 import android.app.IntentService;
 import android.content.Intent;

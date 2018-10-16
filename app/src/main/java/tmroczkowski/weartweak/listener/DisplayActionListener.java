@@ -1,11 +1,11 @@
-package tmroczkowski.weartweak;
+package tmroczkowski.weartweak.listener;
 
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.display.DisplayManager;
-import android.os.PowerManager;
 import android.view.Display;
-import android.widget.Toast;
+
+import tmroczkowski.weartweak.service.WakeManager;
 
 public class DisplayActionListener implements DisplayManager.DisplayListener {
 

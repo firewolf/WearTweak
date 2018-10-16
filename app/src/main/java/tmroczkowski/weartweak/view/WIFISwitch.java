@@ -1,10 +1,12 @@
-package tmroczkowski.weartweak;
+package tmroczkowski.weartweak.view;
 
 import android.app.Activity;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+
+import tmroczkowski.weartweak.R;
 
 public class WIFISwitch {
 

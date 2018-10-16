@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".FaceBroadcastStaticReceiver">
+        <receiver android:name=".broadcast.FaceBroadcastStaticReceiver">
             <intent-filter>
                 <action android:name=".MainActivity.ACTION_UPDATE_TIMEOUT" />
                 <action android:name="com.google.android.wearable.watchfaces.action.REQUEST_STATE" />

@@ -1,9 +1,11 @@
-package tmroczkowski.weartweak;
+package tmroczkowski.weartweak.broadcast;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import tmroczkowski.weartweak.service.WakeManager;
 
 public class FaceBroadcastStaticReceiver extends BroadcastReceiver {
 

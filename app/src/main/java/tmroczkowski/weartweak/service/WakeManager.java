@@ -1,4 +1,4 @@
-package tmroczkowski.weartweak;
+package tmroczkowski.weartweak.service;
 
 import android.os.PowerManager;
 import android.util.Log;

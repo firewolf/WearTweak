@@ -1,4 +1,4 @@
-package tmroczkowski.weartweak;
+package tmroczkowski.weartweak.view;
 
 import android.app.Activity;
 import android.widget.RadioGroup;
@@ -7,6 +7,8 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
+
+import tmroczkowski.weartweak.R;
 
 public class RadioButtonsManager extends Observable {
 

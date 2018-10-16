@@ -1,16 +1,17 @@
-package tmroczkowski.weartweak;
+package tmroczkowski.weartweak.service;
 
-import android.app.Service;
+import android.app.IntentService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.wearable.watchface.WatchFaceService;
 import android.util.Log;
 
-public class WearTweakService extends Service {
+import tmroczkowski.weartweak.broadcast.FaceBroadcastReceiver;
+
+public class WearTweakIntentService extends IntentService {
 
     long timeout = 5 * 1000;
 
@@ -18,18 +19,12 @@ public class WearTweakService extends Service {
 
     WakeManager wakeManager;
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    public WearTweakIntentService() {
+        super("WearTweakIntentService");
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    protected void onHandleIntent(Intent intent) {
 
         timeout = intent.getLongExtra("timeout", timeout);
 
@@ -43,8 +38,6 @@ public class WearTweakService extends Service {
         this.registerReceiver(broadcastReceiver, intentFilter);
 
         Log.d ("WearTweakService", "Service onCreate, FaceBroadcastReceiver registered.");
-
-        return START_STICKY;
     }
 
     @Override

@@ -1,9 +1,10 @@
-package tmroczkowski.weartweak;
-
-import android.os.PowerManager;
+package tmroczkowski.weartweak.observer;
 
 import java.util.Observable;
 import java.util.Observer;
+
+import tmroczkowski.weartweak.service.WakeManager;
+import tmroczkowski.weartweak.view.RadioButtonsManager;
 
 public class RadioButtonsObserver implements Observer {
 
