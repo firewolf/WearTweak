@@ -8,4 +8,6 @@
     <string name="wifi">WiFi</string>
     <string name="bluetooth">BlueTooth</string>
     <string name="preferencesFile">preferences</string>
+    <string name="screentimeout">Screen timeout:</string>
+    <string name="options">Options:</string>
 </resources>

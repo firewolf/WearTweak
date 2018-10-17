@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="titleButtonCheckedGradientLight">#7592d1</color>
+    <color name="titleButtonCheckedGradientDark">#5b81d3</color>
+    <color name="titleButtonCheckedBorder">#5b81d3</color>
+    <color name="titleButtonGradientLight">#aaaaaa</color>
+    <color name="titleButtonGradientDark">#666666</color>
+    <color name="titleButtonBorder">#5b81d3</color>
+</resources>

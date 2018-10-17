@@ -30,7 +30,9 @@ public class TimeoutRadioButtons {
 
         RadioGroup radioGroup = ((Activity) context).findViewById (R.id.radioGroup1);
         radioGroup.setOnCheckedChangeListener((group, checkedId)-> setOnCheckedChangeListener (checkedId));
-        radioGroup.check (defaultRadioButton);
+        if (mapper.containsKey(defaultRadioButton)) {
+            radioGroup.check(defaultRadioButton);
+        }
     }
 
     private void setOnCheckedChangeListener (int checkedId) {
