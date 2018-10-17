@@ -1,6 +1,7 @@
 package tmroczkowski.weartweak.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -9,6 +10,8 @@ import java.util.Map;
 import java.util.Observable;
 
 import tmroczkowski.weartweak.R;
+import tmroczkowski.weartweak.WearTweakData;
+import tmroczkowski.weartweak.service.WakeManager;
 
 public class RadioButtonsManager extends Observable {
 
@@ -26,14 +29,12 @@ public class RadioButtonsManager extends Observable {
         radioGroup.check (defaultRadioButton);
         this.checkedId = defaultRadioButton;
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        radioGroup.setOnCheckedChangeListener((RadioGroup group, int checkedId)-> {
 
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                //setChanged();
-                //notifyObservers(mapper.get (checkedId));
-                setCheckedId(checkedId);
-            }
+            setCheckedId(checkedId);
+
+            WearTweakData wearTweakData = (WearTweakData) activity.getApplicationContext();
+            wearTweakData.setTimeout(mapper.get (checkedId));
         });
 
     }

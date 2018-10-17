@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
 
+import tmroczkowski.weartweak.listener.DisplayActionListener;
 import tmroczkowski.weartweak.view.BluetoothSwitch;
 import tmroczkowski.weartweak.view.RadioButtonsManager;
 import tmroczkowski.weartweak.view.WIFISwitch;
@@ -25,7 +26,7 @@ public class MainActivity extends WearableActivity {
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         defaultRadioButton = sharedPref.getInt("defaultRadioButton", defaultRadioButton);
 
-        //new DisplayActionListener(this, wakeManager);
+        new DisplayActionListener(this.getApplicationContext());
         radioButtonsManager = new RadioButtonsManager(this, defaultRadioButton);
         //radioButtonsManager.addObserver(new RadioButtonObserver(wakeManager));
 
