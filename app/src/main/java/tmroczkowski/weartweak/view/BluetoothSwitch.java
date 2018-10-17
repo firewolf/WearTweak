@@ -19,20 +19,17 @@ public class BluetoothSwitch {
         if (btAdapter != null) {
 
             switchBT.setChecked(btAdapter.isEnabled());
-
-            switchBT.setOnCheckedChangeListener (
-                (CompoundButton buttonView, boolean isChecked) -> {
-                    if (isChecked) {
-                        btAdapter.enable ();
-                    } else {
-                        btAdapter.disable();
-                    }
-                }
-            );
-
+            switchBT.setOnCheckedChangeListener ((buttonView, isChecked) -> switchBtAdapter (isChecked, btAdapter));
         } else {
             ((ViewGroup) switchBT.getParent ()).removeView(switchBT);
-            //remove switch
+        }
+    }
+
+    private void switchBtAdapter (boolean isChecked, BluetoothAdapter btAdapter) {
+        if (isChecked) {
+            btAdapter.enable ();
+        } else {
+            btAdapter.disable();
         }
     }
 }

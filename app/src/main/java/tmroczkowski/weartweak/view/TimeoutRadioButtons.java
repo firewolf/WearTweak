@@ -29,11 +29,13 @@ public class TimeoutRadioButtons {
         this.editor = Common.getPreferences(context).edit();
 
         RadioGroup radioGroup = ((Activity) context).findViewById (R.id.radioGroup1);
-        radioGroup.setOnCheckedChangeListener((RadioGroup group, int checkedId)-> {
-            this.setCheckedId (checkedId);
-            this.saveTimeout (checkedId);
-        });
+        radioGroup.setOnCheckedChangeListener((group, checkedId)-> setOnCheckedChangeListener (checkedId));
         radioGroup.check (defaultRadioButton);
+    }
+
+    private void setOnCheckedChangeListener (int checkedId) {
+        this.setCheckedId (checkedId);
+        this.saveTimeout (checkedId);
     }
 
     public void saveState() {

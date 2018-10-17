@@ -18,8 +18,6 @@ public class WIFISwitch {
         Switch switchWI = ((Activity) context).findViewById(R.id.switchWI);
 
         switchWI.setChecked(wifiManager.isWifiEnabled());
-        switchWI.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
-            wifiManager.setWifiEnabled(isChecked);
-        });
+        switchWI.setOnCheckedChangeListener((buttonView, isChecked) -> wifiManager.setWifiEnabled (isChecked));
     }
 }
