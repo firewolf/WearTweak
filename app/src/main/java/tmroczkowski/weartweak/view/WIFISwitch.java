@@ -11,28 +11,15 @@ import tmroczkowski.weartweak.R;
 
 public class WIFISwitch {
 
-    private WifiManager wifiManager;
+    public WIFISwitch (Context context) {
 
-    public WIFISwitch (Activity activity) {
+        final WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
-        wifiManager = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
-
-        Switch switchWI = activity.findViewById(R.id.switchWI);
+        Switch switchWI = ((Activity) context).findViewById(R.id.switchWI);
 
         switchWI.setChecked(wifiManager.isWifiEnabled());
-        switchWI.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d (this.getClass().toString(), "onCheckedChanged: [" + isChecked + "]");
-
-                getWifiManager().setWifiEnabled(isChecked);
-            }
+        switchWI.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
+            wifiManager.setWifiEnabled(isChecked);
         });
-
-    }
-
-    private WifiManager getWifiManager () {
-        return wifiManager;
     }
 }

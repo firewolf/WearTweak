@@ -28,9 +28,9 @@ public class MainActivity extends WearableActivity {
         sharedPreferences = Common.getPreferences(this);
         defaultRadioButtonId = sharedPreferences.getInt("timeoutId", defaultRadioButtonId);
 
-        new DisplayActionListener(this.getApplicationContext());
         timeoutRadioButtons = new TimeoutRadioButtons(this, defaultRadioButtonId);
 
+        new DisplayActionListener(this.getApplicationContext());
         new WIFISwitch(this);
         new BluetoothSwitch(this);
 

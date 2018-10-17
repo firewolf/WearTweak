@@ -2,19 +2,14 @@ package tmroczkowski.weartweak.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
 
 import tmroczkowski.weartweak.R;
-import tmroczkowski.weartweak.WearTweakData;
 import tmroczkowski.weartweak.helper.Common;
-import tmroczkowski.weartweak.service.WakeManager;
 
 public class TimeoutRadioButtons {
 
@@ -41,6 +36,11 @@ public class TimeoutRadioButtons {
         radioGroup.check (defaultRadioButton);
     }
 
+    public void saveState() {
+        editor.putInt ("timeoutId", checkedId);
+        editor.apply ();
+    }
+
     private void setCheckedId (int checkedId) {
         this.checkedId = checkedId;
     }
@@ -48,10 +48,5 @@ public class TimeoutRadioButtons {
     private void saveTimeout (int checkedId) {
         editor.putLong ("timeout", mapper.get (checkedId));
         editor.apply();
-    }
-
-    public void saveState() {
-        editor.putInt ("timeoutId", checkedId);
-        editor.apply ();
     }
 }

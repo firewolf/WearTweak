@@ -8,7 +8,6 @@ import tmroczkowski.weartweak.R;
 public class Common {
 
     public static SharedPreferences getPreferences (Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(context.getString (R.string.preferencesFile), Context.MODE_PRIVATE);
-        return preferences;
+        return context.getSharedPreferences(context.getString (R.string.preferencesFile), Context.MODE_PRIVATE);
     }
 }

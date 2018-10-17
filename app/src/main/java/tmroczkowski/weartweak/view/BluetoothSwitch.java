@@ -30,17 +30,6 @@ public class BluetoothSwitch {
                 }
             );
 
-//            switchBT.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//
-//                @Override
-//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    if (isChecked) {
-//                        btAdapter.enable();
-//                    } else {
-//                        btAdapter.disable ();
-//                    }
-//                }
-//            });
         } else {
             ((ViewGroup) switchBT.getParent ()).removeView(switchBT);
             //remove switch

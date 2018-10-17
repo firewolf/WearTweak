@@ -8,7 +8,7 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import tmroczkowski.weartweak.R;
-import tmroczkowski.weartweak.service.WakeManager;
+import tmroczkowski.weartweak.service.WakelockManager;
 
 public class FaceBroadcastStaticReceiver extends BroadcastReceiver {
 
@@ -17,12 +17,12 @@ public class FaceBroadcastStaticReceiver extends BroadcastReceiver {
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.preferencesFile), Context.MODE_PRIVATE);
 
-        long timeout = sharedPreferences.getLong("timeout", WakeManager.DEFAULT_TIMEOUT);
+        long timeout = sharedPreferences.getLong("timeout", WakelockManager.DEFAULT_TIMEOUT);
         boolean visible = intent.getBooleanExtra("watch_face_visible", false);
 
         Log.d (this.getClass().toString(), "wakeLock [" + timeout + "]");
 
-        new WakeManager((PowerManager) context.getSystemService(Context.POWER_SERVICE)).wakeLock(visible, timeout);
+        new WakelockManager((PowerManager) context.getSystemService(Context.POWER_SERVICE)).wakeLock(visible, timeout);
     }
 
 }
