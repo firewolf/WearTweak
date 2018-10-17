@@ -1,7 +1,9 @@
 package tmroczkowski.weartweak.view;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -11,11 +13,14 @@ import java.util.Observable;
 
 import tmroczkowski.weartweak.R;
 import tmroczkowski.weartweak.WearTweakData;
+import tmroczkowski.weartweak.helper.Common;
 import tmroczkowski.weartweak.service.WakeManager;
 
-public class RadioButtonsManager extends Observable {
+public class TimeoutRadioButtons {
 
     int checkedId;
+
+    SharedPreferences.Editor editor;
 
     public final static Map<Integer, Long> mapper = new HashMap<Integer, Long>() {{
         put(R.id.radioButton5, (long) 5 * 1000);
@@ -23,28 +28,30 @@ public class RadioButtonsManager extends Observable {
         put(R.id.radioButton60, (long) 60 * 1000);
     }};
 
-    public RadioButtonsManager (Activity activity, int defaultRadioButton) {
+    public TimeoutRadioButtons(Context context, int defaultRadioButton) {
 
-        RadioGroup radioGroup = activity.findViewById (R.id.radioGroup1);
-        radioGroup.check (defaultRadioButton);
         this.checkedId = defaultRadioButton;
+        this.editor = Common.getPreferences(context).edit();
 
+        RadioGroup radioGroup = ((Activity) context).findViewById (R.id.radioGroup1);
         radioGroup.setOnCheckedChangeListener((RadioGroup group, int checkedId)-> {
-
-            setCheckedId(checkedId);
-
-            WearTweakData wearTweakData = (WearTweakData) activity.getApplicationContext();
-            wearTweakData.setTimeout(mapper.get (checkedId));
+            this.setCheckedId (checkedId);
+            this.saveTimeout (checkedId);
         });
-
+        radioGroup.check (defaultRadioButton);
     }
 
     private void setCheckedId (int checkedId) {
         this.checkedId = checkedId;
     }
 
-    public int getCheckedId () {
-        return checkedId;
+    private void saveTimeout (int checkedId) {
+        editor.putLong ("timeout", mapper.get (checkedId));
+        editor.apply();
     }
 
+    public void saveState() {
+        editor.putInt ("timeoutId", checkedId);
+        editor.apply ();
+    }
 }

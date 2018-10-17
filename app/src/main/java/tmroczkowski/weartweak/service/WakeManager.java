@@ -5,11 +5,11 @@ import android.util.Log;
 
 public class WakeManager {
 
+    public static long DEFAULT_TIMEOUT = 5 * 1000L;
+
     PowerManager powerManager;
 
     PowerManager.WakeLock wakeLock;
-
-    long timeout;
 
     private String tag = "ScreenTimeout::FullWakeLock";
 
@@ -17,30 +17,25 @@ public class WakeManager {
         this.powerManager = powerManager;
     }
 
-    public void wakeLock () {
+    public void wakeLock (boolean visible, long timeout) {
 
-        if (wakeLock != null && wakeLock.isHeld()) {
-            this.releaseLock();
-        }
+        this.releaseLock();
 
-        wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, this.tag);
+        if (visible) {
 
-        Log.d ("WakeManager", "timeout: [" + timeout + "]");
+            wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, this.tag);
 
-        if (timeout > 0) {
-            wakeLock.acquire(timeout);
-        } else {
-            wakeLock.acquire();
+            Log.d ("WakeManager", "timeout: [" + timeout + "]");
+
+            if (timeout > 0) {
+                wakeLock.acquire(timeout);
+            }
         }
     }
 
     public void releaseLock () {
-        if (wakeLock.isHeld()) {
+        if (wakeLock != null && wakeLock.isHeld()) {
             wakeLock.release();
         }
-    }
-
-    public void setTimeout (long timeout) {
-        this.timeout = timeout;
     }
 }

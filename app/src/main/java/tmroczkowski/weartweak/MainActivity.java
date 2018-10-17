@@ -1,20 +1,22 @@
 package tmroczkowski.weartweak;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
 
+import tmroczkowski.weartweak.helper.Common;
 import tmroczkowski.weartweak.listener.DisplayActionListener;
 import tmroczkowski.weartweak.view.BluetoothSwitch;
-import tmroczkowski.weartweak.view.RadioButtonsManager;
+import tmroczkowski.weartweak.view.TimeoutRadioButtons;
 import tmroczkowski.weartweak.view.WIFISwitch;
 
 public class MainActivity extends WearableActivity {
 
-    RadioButtonsManager radioButtonsManager;
+    TimeoutRadioButtons timeoutRadioButtons;
 
-    private int defaultRadioButton = R.id.radioButton5;
+    private int defaultRadioButtonId = R.id.radioButton5;
+
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,62 +25,23 @@ public class MainActivity extends WearableActivity {
 
         setContentView(R.layout.activity_main);
 
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        defaultRadioButton = sharedPref.getInt("defaultRadioButton", defaultRadioButton);
+        sharedPreferences = Common.getPreferences(this);
+        defaultRadioButtonId = sharedPreferences.getInt("timeoutId", defaultRadioButtonId);
 
         new DisplayActionListener(this.getApplicationContext());
-        radioButtonsManager = new RadioButtonsManager(this, defaultRadioButton);
-        //radioButtonsManager.addObserver(new RadioButtonObserver(wakeManager));
+        timeoutRadioButtons = new TimeoutRadioButtons(this, defaultRadioButtonId);
 
         new WIFISwitch(this);
         new BluetoothSwitch(this);
-
-
-//        WakeManager wakeManager = new WakeManager((PowerManager) this.getSystemService(Context.POWER_SERVICE));
-//
-//        BroadcastReceiver broadcastReceiver = new FaceBroadcastReceiver(wakeManager);
-//        IntentFilter intentFilter = new IntentFilter(WatchFaceService.ACTION_REQUEST_STATE);
-//        this.registerReceiver(broadcastReceiver, intentFilter);
-//        broadcastReceiver.goAsync();
 
         setAmbientEnabled(); // Enables Always-on
     }
 
     @Override
-    public void onEnterAmbient(Bundle ambientDetails) {
-
-        super.onEnterAmbient(ambientDetails);
-    }
-
-    private void saveData () {
-
-        SharedPreferences.Editor editor = this.getPreferences(Context.MODE_PRIVATE).edit();
-        editor.putInt("defaultRadioButton", radioButtonsManager.getCheckedId ());
-        editor.apply ();
-    }
-
-    @Override
     protected void onDestroy () {
 
-//        Intent wearTweakService = new Intent(this, WearTweakIntentService.class);
-//        Log.d("MainActivity", "onDestroy value: [" + RadioButtonsManager.mapper.get (radioButtonsManager.getCheckedId()) + "]");
-//        wearTweakService.putExtra("timeout", RadioButtonsManager.mapper.get (radioButtonsManager.getCheckedId()));
-//
-//        startService(wearTweakService);
+        timeoutRadioButtons.saveState ();
 
-        this.saveData();
         super.onDestroy();
-    }
-
-    @Override
-    protected void onPause() {
-
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-
-        super.onStop();
     }
 }
