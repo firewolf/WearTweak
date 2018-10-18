@@ -2,27 +2,45 @@ package tmroczkowski.weartweak.view;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
+import android.media.Image;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.Switch;
 
 import tmroczkowski.weartweak.R;
 
 public class BluetoothSwitch {
 
-    public BluetoothSwitch (Activity activity) {
+    boolean state;
 
-        Switch switchBT = activity.findViewById(R.id.switchBT);
+    public BluetoothSwitch (Context context) {
 
-        final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+        ImageButton imageButton = ((Activity) context).findViewById(R.id.buttonBluetooth);
+
+        BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (btAdapter != null) {
 
-            switchBT.setChecked(btAdapter.isEnabled());
-            switchBT.setOnCheckedChangeListener ((buttonView, isChecked) -> setOnCheckedChangeListener (isChecked, btAdapter));
+            setState(btAdapter.isEnabled());
+            imageButton.setPressed(getState());
+            imageButton.setOnClickListener(v -> {
+                setState(!getState());
+                v.setPressed(getState());
+                setOnCheckedChangeListener(getState(), btAdapter);
+            });
         } else {
-            ((ViewGroup) switchBT.getParent ()).removeView(switchBT);
+            ((ViewGroup) imageButton.getParent ()).removeView(imageButton);
         }
+    }
+
+    private void setState (boolean state) {
+        this.state = state;
+    }
+
+    private boolean getState () {
+        return state;
     }
 
     private void setOnCheckedChangeListener (boolean isChecked, BluetoothAdapter btAdapter) {

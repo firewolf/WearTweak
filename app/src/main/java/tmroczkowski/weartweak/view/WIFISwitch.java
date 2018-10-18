@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.Switch;
 
 import tmroczkowski.weartweak.R;
@@ -15,9 +16,12 @@ public class WIFISwitch {
 
         final WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
-        Switch switchWI = ((Activity) context).findViewById(R.id.switchWI);
+        ImageButton imageButton = ((Activity) context).findViewById(R.id.buttonWifi);
 
-        switchWI.setChecked(wifiManager.isWifiEnabled());
-        switchWI.setOnCheckedChangeListener((buttonView, isChecked) -> wifiManager.setWifiEnabled (isChecked));
+        imageButton.setPressed(wifiManager.isWifiEnabled());
+        imageButton.setOnClickListener(v -> {
+            v.setPressed (!v.isPressed());
+            wifiManager.setWifiEnabled(v.isPressed());
+        });
     }
 }
