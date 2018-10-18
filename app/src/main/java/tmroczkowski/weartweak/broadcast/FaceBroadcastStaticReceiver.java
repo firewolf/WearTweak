@@ -3,11 +3,9 @@ package tmroczkowski.weartweak.broadcast;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.PowerManager;
 import android.util.Log;
 
-import tmroczkowski.weartweak.R;
 import tmroczkowski.weartweak.helper.Common;
 import tmroczkowski.weartweak.service.WakelockManager;
 
@@ -21,7 +19,13 @@ public class FaceBroadcastStaticReceiver extends BroadcastReceiver {
 
         Log.d (this.getClass().toString(), "onReceive - visible: [" + visible + "], timeout [" + timeout + "]");
 
-        new WakelockManager((PowerManager) context.getSystemService(Context.POWER_SERVICE)).wakeLock(visible, timeout);
+        WakelockManager wakelockManager = new WakelockManager((PowerManager) context.getSystemService(Context.POWER_SERVICE));
+
+        if (visible && timeout > 0) {
+            wakelockManager.wakeLock(timeout);
+        } else {
+            wakelockManager.releaseLock();
+        }
     }
 
 }

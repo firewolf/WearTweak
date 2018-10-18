@@ -7,29 +7,23 @@ public class WakelockManager {
 
     public static long DEFAULT_TIMEOUT = 5 * 1000L;
 
-    PowerManager powerManager;
-
     PowerManager.WakeLock wakeLock;
 
     private String tag = "ScreenTimeout::FullWakeLock";
 
     public WakelockManager(PowerManager powerManager) {
-        this.powerManager = powerManager;
+
+        wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, this.tag);
     }
 
-    public void wakeLock (boolean visible, long timeout) {
+    public void wakeLock (long timeout) {
 
         this.releaseLock();
 
-        if (visible) {
+        Log.d (this.getClass().toString(), "timeout: [" + timeout + "]");
 
-            wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, this.tag);
-
-            Log.d (this.getClass().toString(), "timeout: [" + timeout + "]");
-
-            if (timeout > 0) {
-                wakeLock.acquire(timeout);
-            }
+        if (timeout > 0) {
+            wakeLock.acquire(timeout);
         }
     }
 
