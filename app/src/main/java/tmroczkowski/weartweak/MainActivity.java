@@ -6,9 +6,9 @@ import android.support.wearable.activity.WearableActivity;
 
 import tmroczkowski.weartweak.helper.Common;
 import tmroczkowski.weartweak.listener.DisplayActionListener;
-import tmroczkowski.weartweak.view.BluetoothSwitch;
 import tmroczkowski.weartweak.view.TimeoutRadioButtons;
-import tmroczkowski.weartweak.view.WIFISwitch;
+import tmroczkowski.weartweak.view.button.BluetoothButton;
+import tmroczkowski.weartweak.view.button.WifiButton;
 
 public class MainActivity extends WearableActivity {
 
@@ -28,8 +28,8 @@ public class MainActivity extends WearableActivity {
         timeoutRadioButtons = new TimeoutRadioButtons(this, defaultRadioButtonId);
 
         new DisplayActionListener(this.getApplicationContext());
-        new WIFISwitch(this);
-        new BluetoothSwitch(this);
+        new WifiButton(this);
+        new BluetoothButton(this);
 
         setAmbientEnabled(); // Enables Always-on
     }

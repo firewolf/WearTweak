@@ -10,16 +10,6 @@ public class DisplayActionListener implements DisplayManager.DisplayListener {
 
     private Context context;
 
-    private String [] state2String = {
-            "UNKNOWN",
-            "OFF",
-            "ON",
-            "DOZE",
-            "DOZE_SUSPEND",
-            "VR",
-            "ON_SUSPEND"
-    };
-
     private DisplayManager displayManager;
 
     public DisplayActionListener (Context context) {
@@ -40,13 +30,9 @@ public class DisplayActionListener implements DisplayManager.DisplayListener {
 
         int state = displayManager.getDisplay(displayId).getState ();
 
-        Log.d (this.getClass().toString(), "[" + state + "] [" + state2String [state] + "]");
-
         if (state == Display.STATE_ON) {
             this.sendBroadcastMessage();
         }
-
-        //displayManager.unregisterDisplayListener(displayActionListener);
     }
 
     private void sendBroadcastMessage () {

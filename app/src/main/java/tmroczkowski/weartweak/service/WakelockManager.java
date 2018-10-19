@@ -20,8 +20,6 @@ public class WakelockManager {
 
         this.releaseLock();
 
-        Log.d (this.getClass().toString(), "timeout: [" + timeout + "]");
-
         if (timeout > 0) {
             wakeLock.acquire(timeout);
         }

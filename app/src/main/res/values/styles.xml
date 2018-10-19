@@ -5,17 +5,15 @@
         <item name="android:button">@null</item>
         <item name="android:textSize">16dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_marginLeft">8dp</item>
         <item name="android:textColor">@drawable/radiobutton_color_selector</item>
     </style>
-    <style name="WifiButtonStyle" parent="@android:style/Widget.CompoundButton">
+    <style name="ButtonStyle" parent="@android:style/Widget.CompoundButton">
         <item name="android:background">@drawable/button_wifi_selector</item>
-        <item name="android:src">@drawable/ic_outline_wifi_off_24px</item>
-        <item name="android:layout_marginLeft">8dp</item>
     </style>
-    <style name="BluetoothButtonStyle" parent="@android:style/Widget.CompoundButton">
-        <item name="android:background">@drawable/button_wifi_selector</item>
+    <style name="WifiButtonStyle" parent="@style/ButtonStyle">
+        <item name="android:src">@drawable/ic_outline_wifi_off_24px</item>
+    </style>
+    <style name="BluetoothButtonStyle" parent="@style/ButtonStyle">
         <item name="android:src">@drawable/ic_outline_bluetooth_disabled_24px</item>
-        <item name="android:layout_marginLeft">8dp</item>
     </style>
 </resources>
