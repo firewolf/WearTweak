@@ -43,6 +43,8 @@
                 <action android:name="com.google.android.wearable.watchfaces.action.REQUEST_STATE" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".service.WakelockService" />
     </application>
 
 </manifest>
