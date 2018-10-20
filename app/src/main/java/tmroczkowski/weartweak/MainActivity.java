@@ -1,20 +1,21 @@
 package tmroczkowski.weartweak;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
 
-import tmroczkowski.weartweak.helper.Common;
 import tmroczkowski.weartweak.listener.DisplayActionListener;
+import tmroczkowski.weartweak.preferences.Timeout;
+import tmroczkowski.weartweak.service.WakelockService;
 import tmroczkowski.weartweak.view.TimeoutRadioButtons;
 import tmroczkowski.weartweak.view.button.BluetoothButton;
 import tmroczkowski.weartweak.view.button.WifiButton;
 
 public class MainActivity extends WearableActivity {
 
-    TimeoutRadioButtons timeoutRadioButtons;
+    long timeout;
 
-    private long defaultTimeout = 5 * 1000;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,18 +24,26 @@ public class MainActivity extends WearableActivity {
 
         setContentView(R.layout.activity_main);
 
-        this.restoreState();
+        intent = new Intent (this, WakelockService.class);
 
-        timeoutRadioButtons = new TimeoutRadioButtons(this, defaultTimeout);
-
+        new TimeoutRadioButtons(this, (new Timeout(this)).read(), (timeout) -> {
+            this.timeout = timeout;
+            if (timeout == -1) {
+                this.stopService(intent);
+            }
+        });
         new DisplayActionListener(this.getApplicationContext());
         new WifiButton(this);
         new BluetoothButton(this);
     }
 
-    private void restoreState () {
+    @Override
+    protected void onDestroy() {
 
-        SharedPreferences sharedPreferences = Common.getPreferences(this);
-        defaultTimeout = sharedPreferences.getLong ("timeout", defaultTimeout);
+        if (timeout != -1) {
+            startService (intent);
+        }
+
+        super.onDestroy();
     }
 }

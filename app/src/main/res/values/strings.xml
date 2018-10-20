@@ -2,9 +2,10 @@
     <string name="app_name">Screen Timeout</string>
     <string name="title">Screen Timeout</string>
     <string name="enable">Enable</string>
-    <string name="_5">5</string>
+    <string name="_off">off</string>
     <string name="_30">30</string>
     <string name="_60">60</string>
+    <string name="_120">120</string>
     <string name="_unlimited">∞</string>
     <string name="wifi">WiFi</string>
     <string name="bluetooth">BlueTooth</string>

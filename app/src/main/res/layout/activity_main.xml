@@ -11,8 +11,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingVertical="10dp"
         android:orientation="vertical"
         app:boxedEdges="all">
 
@@ -21,57 +19,80 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
-            android:layout_marginTop="8dp"
             android:text="@string/screentimeout"
             android:textSize="14sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <RadioGroup
                 android:id="@+id/radioGroup1"
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginTop="2sp">
+                android:layout_marginTop="2sp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/radioButton5"
+                    android:id="@+id/radioButtonOff"
                     style="@style/RadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/_5" />
+                    android:text="@string/_off" />
 
                 <RadioButton
                     android:id="@+id/radioButton30"
                     style="@style/RadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2sp"
-                    android:text="@string/_30"/>
+                    android:layout_marginLeft="8sp"
+                    android:text="@string/_30" />
 
                 <RadioButton
                     android:id="@+id/radioButton60"
                     style="@style/RadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2sp"
-                    android:text="@string/_60"/>
+                    android:layout_marginLeft="8sp"
+                    android:text="@string/_60" />
+
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/radioGroup2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="6sp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButton120"
+                    style="@style/RadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/_120" />
 
                 <RadioButton
                     android:id="@+id/radioButton8"
                     style="@style/RadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2sp"
-                    android:text="@string/_unlimited"/>
+                    android:layout_marginLeft="8sp"
+                    android:text="@string/_unlimited" />
 
             </RadioGroup>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/options"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
-            android:layout_marginTop="8sp"
+            android:layout_marginTop="4sp"
             android:text="@string/options"
             android:textSize="14sp" />
 
