@@ -14,7 +14,7 @@ public class MainActivity extends WearableActivity {
 
     TimeoutRadioButtons timeoutRadioButtons;
 
-    private int defaultRadioButtonId = R.id.radioButton5;
+    private long defaultTimeout = 5 * 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,25 +25,16 @@ public class MainActivity extends WearableActivity {
 
         this.restoreState();
 
-        timeoutRadioButtons = new TimeoutRadioButtons(this, defaultRadioButtonId);
+        timeoutRadioButtons = new TimeoutRadioButtons(this, defaultTimeout);
 
         new DisplayActionListener(this.getApplicationContext());
         new WifiButton(this);
         new BluetoothButton(this);
-
-        setAmbientEnabled(); // Enables Always-on
     }
 
     private void restoreState () {
 
         SharedPreferences sharedPreferences = Common.getPreferences(this);
-        defaultRadioButtonId = sharedPreferences.getInt("timeoutId", defaultRadioButtonId);
-    }
-
-    @Override
-    protected void onDestroy () {
-
-        timeoutRadioButtons.saveState ();
-        super.onDestroy();
+        defaultTimeout = sharedPreferences.getLong ("timeout", defaultTimeout);
     }
 }

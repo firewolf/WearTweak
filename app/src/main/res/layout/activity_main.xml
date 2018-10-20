@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_grey"
     android:padding="@dimen/box_inset_layout_padding"
     tools:context=".MainActivity"
     tools:deviceIds="wear">
@@ -46,7 +45,7 @@
                     style="@style/RadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10sp"
+                    android:layout_marginLeft="2sp"
                     android:text="@string/_30"/>
 
                 <RadioButton
@@ -54,8 +53,16 @@
                     style="@style/RadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10sp"
+                    android:layout_marginLeft="2sp"
                     android:text="@string/_60"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton8"
+                    style="@style/RadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2sp"
+                    android:text="@string/_unlimited"/>
 
             </RadioGroup>
 
