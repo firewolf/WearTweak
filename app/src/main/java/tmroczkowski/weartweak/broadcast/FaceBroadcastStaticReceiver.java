@@ -19,7 +19,7 @@ public class FaceBroadcastStaticReceiver extends BroadcastReceiver {
 
         WakelockManager wakelockManager = new WakelockManager((PowerManager) context.getSystemService(Context.POWER_SERVICE));
 
-        if (visible && timeout > 0) {
+        if (visible) {
             wakelockManager.wakeLock(timeout);
         } else {
             wakelockManager.releaseLock();
