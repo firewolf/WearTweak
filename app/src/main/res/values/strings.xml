@@ -5,6 +5,7 @@
     <string name="_5">5</string>
     <string name="_30">30</string>
     <string name="_60">60</string>
+    <string name="_unlimited">∞</string>
     <string name="wifi">WiFi</string>
     <string name="bluetooth">BlueTooth</string>
     <string name="preferencesFile">preferences</string>

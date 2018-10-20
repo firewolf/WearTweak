@@ -7,6 +7,9 @@ import android.widget.RadioGroup;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import tmroczkowski.weartweak.R;
 import tmroczkowski.weartweak.helper.Common;
@@ -21,6 +24,7 @@ public class TimeoutRadioButtons {
         put(R.id.radioButton5, (long) 5 * 1000);
         put(R.id.radioButton30, (long) 30 * 1000);
         put(R.id.radioButton60, (long) 60 * 1000);
+        put(R.id.radioButton8, (long) 0);
     }};
 
     public TimeoutRadioButtons(Context context, int defaultRadioButton) {

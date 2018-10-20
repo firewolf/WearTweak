@@ -30,8 +30,6 @@ public class MainActivity extends WearableActivity {
         new DisplayActionListener(this.getApplicationContext());
         new WifiButton(this);
         new BluetoothButton(this);
-
-        setAmbientEnabled(); // Enables Always-on
     }
 
     private void restoreState () {

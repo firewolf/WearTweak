@@ -19,10 +19,7 @@ public class WakelockManager {
     public void wakeLock (long timeout) {
 
         this.releaseLock();
-
-        if (timeout > 0) {
-            wakeLock.acquire(timeout);
-        }
+        wakeLock.acquire(timeout);
     }
 
     public void releaseLock () {
