@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.util.Log;
 
 import tmroczkowski.weartweak.preferences.Timeout;
 
@@ -27,10 +26,9 @@ public class WakelockService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         boolean visible = intent.getBooleanExtra("watch_face_visible", false);
-        long timeout = (new Timeout(this)).read();
 
         if (visible) {
-            this.acquire (timeout);
+            this.acquire (intent.getLongExtra("timeout", Timeout.DEFAULT_TIMEOUT));
         } else {
             this.releaseLock();
         }

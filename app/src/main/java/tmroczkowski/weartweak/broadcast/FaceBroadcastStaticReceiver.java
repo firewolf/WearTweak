@@ -18,6 +18,8 @@ public class FaceBroadcastStaticReceiver extends BroadcastReceiver {
         if (timeout >= 0) {
             Intent wakelock = new Intent(context, WakelockService.class);
             wakelock.putExtra("watch_face_visible", visible);
+            wakelock.putExtra( "timeout", timeout);
+
             context.startService(wakelock);
         }
     }
