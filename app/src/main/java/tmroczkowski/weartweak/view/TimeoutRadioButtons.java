@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.RadioGroup;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -45,7 +46,7 @@ public class TimeoutRadioButtons {
         radioGroup1.setOnCheckedChangeListener((group, checkedId)-> setOnCheckedChangeListener (group, radioGroup2, checkedId));
         radioGroup2.setOnCheckedChangeListener((group, checkedId)-> setOnCheckedChangeListener (group, radioGroup1, checkedId));
 
-        if (IntStream.of(new int [] {R.id.radioButton120, R.id.radioButton8}).anyMatch(x -> x == defaultRadioButton)){
+        if (Arrays.asList(new int [] {R.id.radioButton120, R.id.radioButton8}).contains(defaultRadioButton)) {
             radioGroup2.check(defaultRadioButton);
         } else {
             radioGroup1.check(defaultRadioButton);
@@ -64,12 +65,12 @@ public class TimeoutRadioButtons {
 
     private int getDefaultRadioButton(long defaultTimeout) {
 
-        Set <Integer> keys = mapper.entrySet()
-                .stream()
-                .filter(entry -> Objects.equals(entry.getValue(), defaultTimeout))
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toSet());
+        for (Map.Entry<Integer, Long> e: mapper.entrySet()) {
+            if (defaultTimeout == e.getValue()) {
+                return e.getKey();
+            }
+        }
 
-        return keys.size() > 0 ? keys.iterator().next() : R.id.radioButtonOff;
+        return R.id.radioButtonOff;
     }
 }
