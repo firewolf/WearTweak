@@ -7,20 +7,17 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
+import tmroczkowski.weartweak.R;
 import tmroczkowski.weartweak.preferences.Timeout;
 
 public class WakelockService extends Service {
-
-    int mStartMode = START_NOT_STICKY;
-
-    private String tag = "tmroczkowski.weartweak.WakelockService";
 
     PowerManager.WakeLock wakeLock;
 
     @Override
     public void onCreate() {
         PowerManager powerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-        wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, this.tag);
+        wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, getString(R.string.lock_tag));
     }
 
     @Override
@@ -35,7 +32,7 @@ public class WakelockService extends Service {
             this.releaseLock();
         }
 
-        return mStartMode;
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -49,6 +46,8 @@ public class WakelockService extends Service {
     }
 
     private void acquire (long timeout) {
+
+        this.releaseLock();
 
         if (timeout > 0) {
             wakeLock.acquire(timeout);

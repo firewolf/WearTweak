@@ -26,12 +26,7 @@ public class MainActivity extends WearableActivity {
 
         intent = new Intent (this, WakelockService.class);
 
-        new TimeoutRadioButtons(this, (new Timeout(this)).read(), (timeout) -> {
-            this.timeout = timeout;
-            if (timeout == -1) {
-                this.stopService(intent);
-            }
-        });
+        new TimeoutRadioButtons(this, (new Timeout(this)).read(), timeout -> this.timeout = timeout);
         new DisplayActionListener(this.getApplicationContext());
         new WifiButton(this);
         new BluetoothButton(this);
@@ -41,7 +36,9 @@ public class MainActivity extends WearableActivity {
     protected void onDestroy() {
 
         if (timeout != -1) {
-            startService (intent);
+            startService(intent);
+        } else {
+            stopService(intent);
         }
 
         super.onDestroy();
