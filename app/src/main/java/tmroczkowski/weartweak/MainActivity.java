@@ -28,12 +28,14 @@ public class MainActivity extends WearableActivity {
         new TimeoutRadioButtons(this, (new Timeout(this)).read(), timeout -> this.timeout = timeout);
         new WifiButton(this);
         new BluetoothButton(this);
+
+        setAmbientEnabled();
     }
 
     @Override
     protected void onDestroy() {
 
-        if (timeout != -1) {
+        if (timeout > -1) {
             startService(intent);
         } else {
             stopService(intent);

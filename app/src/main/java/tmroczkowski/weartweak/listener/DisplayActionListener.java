@@ -9,7 +9,7 @@ import android.view.Display;
 
 public class DisplayActionListener implements DisplayManager.DisplayListener {
 
-    public static String ACTION_SCREEN_ON = "tmroczkowski.weartweak.SCREEN_ON";
+    public static final String ACTION_SCREEN_ON = "tmroczkowski.weartweak.SCREEN_ON";
 
     private Context context;
 

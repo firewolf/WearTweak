@@ -32,7 +32,6 @@ public class WakelockService extends Service {
     @Override
     public void onCreate() {
 
-
         PowerManager powerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, getString(R.string.lock_tag));
 
@@ -49,6 +48,8 @@ public class WakelockService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         boolean visible = intent.getBooleanExtra("watch_face_visible", false);
+
+        Log.d (this.getClass ().toString(), "visible: [" + visible + "]");
 
         if (visible) {
             this.acquire (intent.getLongExtra("timeout", Timeout.DEFAULT_TIMEOUT));
