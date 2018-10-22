@@ -12,4 +12,5 @@
     <string name="preferencesFile">preferences</string>
     <string name="screentimeout">Screen Timeout</string>
     <string name="options">Options:</string>
+    <string name="lock_tag">tmroczkowski.weartweak.WakelockService</string>
 </resources>

@@ -58,8 +58,8 @@ public class TimeoutRadioButtons {
             radioGroup.clearCheck();
             group.check(checkedId);
             long timeoutVal = mapper.get(checkedId);
-            timeout.applyWrite(timeoutVal);
             this.changeListener.action (timeoutVal);
+            timeout.commitWrite(timeoutVal);
         }
     }
 

@@ -37,12 +37,12 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".broadcast.FaceBroadcastStaticReceiver">
+        <!-- <receiver android:name=".broadcast.FaceBroadcastStaticReceiver">
             <intent-filter>
                 <action android:name="tmroczkowski.weartweak.SCREEN_ON" />
                 <action android:name="com.google.android.wearable.watchfaces.action.REQUEST_STATE" />
             </intent-filter>
-        </receiver>
+        </receiver> -->
 
         <service android:name=".service.WakelockService" />
     </application>

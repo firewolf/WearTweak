@@ -1,41 +1,63 @@
 package tmroczkowski.weartweak.service;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.hardware.display.DisplayManager;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.service.wallpaper.WallpaperService;
+import android.support.wearable.watchface.WatchFaceService;
 import android.util.Log;
 
+import tmroczkowski.weartweak.R;
+import tmroczkowski.weartweak.broadcast.FaceBroadcastStaticReceiver;
+import tmroczkowski.weartweak.listener.DisplayActionListener;
 import tmroczkowski.weartweak.preferences.Timeout;
 
 public class WakelockService extends Service {
 
-    int mStartMode = START_NOT_STICKY;
+    private PowerManager.WakeLock wakeLock;
 
-    private String tag = "tmroczkowski.weartweak.WakelockService";
+    private DisplayActionListener displayActionListener;
 
-    PowerManager.WakeLock wakeLock;
+    BroadcastReceiver broadcastReceiver;
 
     @Override
     public void onCreate() {
+
         PowerManager powerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-        wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, this.tag);
+        wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, getString(R.string.lock_tag));
+
+        displayActionListener = new DisplayActionListener(this.getApplicationContext());
+        displayActionListener.register(null);
+
+        broadcastReceiver = new FaceBroadcastStaticReceiver();
+        IntentFilter filter = new IntentFilter(DisplayActionListener.ACTION_SCREEN_ON);
+        filter.addAction(WatchFaceService.ACTION_REQUEST_STATE);
+        this.registerReceiver(broadcastReceiver, filter);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         boolean visible = intent.getBooleanExtra("watch_face_visible", false);
-        long timeout = (new Timeout(this)).read();
+
+        Log.d (this.getClass ().toString(), "visible: [" + visible + "]");
 
         if (visible) {
-            this.acquire (timeout);
+            this.acquire (intent.getLongExtra("timeout", Timeout.DEFAULT_TIMEOUT));
         } else {
             this.releaseLock();
         }
 
-        return mStartMode;
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -45,10 +67,14 @@ public class WakelockService extends Service {
 
     @Override
     public void onDestroy() {
+        displayActionListener.unregister();
+        this.unregisterReceiver(broadcastReceiver);
         this.releaseLock();
     }
 
     private void acquire (long timeout) {
+
+        this.releaseLock();
 
         if (timeout > 0) {
             wakeLock.acquire(timeout);
