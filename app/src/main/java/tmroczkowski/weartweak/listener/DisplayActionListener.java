@@ -3,6 +3,7 @@ package tmroczkowski.weartweak.listener;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.display.DisplayManager;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 
@@ -16,7 +17,6 @@ public class DisplayActionListener implements DisplayManager.DisplayListener {
 
         this.context = context;
         this.displayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
-        this.displayManager.registerDisplayListener(this, null);
     }
 
     @Override
@@ -40,5 +40,13 @@ public class DisplayActionListener implements DisplayManager.DisplayListener {
         intent.putExtra("watch_face_visible", true);
 
         context.sendBroadcast(intent);
+    }
+
+    public void register (Handler handler) {
+        this.displayManager.registerDisplayListener(this, handler);
+    }
+
+    public void unregister () {
+        this.displayManager.unregisterDisplayListener(this);
     }
 }

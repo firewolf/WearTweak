@@ -3,21 +3,41 @@ package tmroczkowski.weartweak.service;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
 import tmroczkowski.weartweak.R;
+import tmroczkowski.weartweak.listener.DisplayActionListener;
 import tmroczkowski.weartweak.preferences.Timeout;
 
 public class WakelockService extends Service {
 
-    PowerManager.WakeLock wakeLock;
+    private SensorManager mSensorManager;
+
+    private PowerManager.WakeLock wakeLock;
+
+    private DisplayActionListener displayActionListener;
+
+    private SensorListener sensorListener;
 
     @Override
     public void onCreate() {
+
         PowerManager powerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Sensor mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        sensorListener = new SensorListener();
+
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, getString(R.string.lock_tag));
+        mSensorManager.registerListener(sensorListener, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
+
+        displayActionListener = new DisplayActionListener(this.getApplicationContext());
+        displayActionListener.register(null);
     }
 
     @Override
@@ -42,6 +62,8 @@ public class WakelockService extends Service {
 
     @Override
     public void onDestroy() {
+        displayActionListener.unregister();
+        mSensorManager.unregisterListener(sensorListener);
         this.releaseLock();
     }
 
@@ -60,5 +82,23 @@ public class WakelockService extends Service {
         if (wakeLock != null && wakeLock.isHeld()) {
             wakeLock.release();
         }
+    }
+
+    private class SensorListener implements SensorEventListener {
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+
+            float distance = event.values[0];
+            Log.d(WakelockService.class.toString(), "onSensorChanged: [" + distance + "]");
+            boolean isSomethingVeryClose = false;
+
+            if (isSomethingVeryClose) {
+                releaseLock ();
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {}
     }
 }

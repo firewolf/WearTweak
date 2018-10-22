@@ -27,7 +27,6 @@ public class MainActivity extends WearableActivity {
         intent = new Intent (this, WakelockService.class);
 
         new TimeoutRadioButtons(this, (new Timeout(this)).read(), timeout -> this.timeout = timeout);
-        new DisplayActionListener(this.getApplicationContext());
         new WifiButton(this);
         new BluetoothButton(this);
     }
