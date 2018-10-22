@@ -1,53 +1,57 @@
 package tmroczkowski.weartweak.service;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.hardware.display.DisplayManager;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.service.wallpaper.WallpaperService;
+import android.support.wearable.watchface.WatchFaceService;
 import android.util.Log;
 
 import tmroczkowski.weartweak.R;
+import tmroczkowski.weartweak.broadcast.FaceBroadcastStaticReceiver;
 import tmroczkowski.weartweak.listener.DisplayActionListener;
 import tmroczkowski.weartweak.preferences.Timeout;
 
 public class WakelockService extends Service {
 
-    private SensorManager mSensorManager;
-
     private PowerManager.WakeLock wakeLock;
 
     private DisplayActionListener displayActionListener;
 
-    private SensorListener sensorListener;
+    BroadcastReceiver broadcastReceiver;
 
     @Override
     public void onCreate() {
 
-        PowerManager powerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        Sensor mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-        sensorListener = new SensorListener();
 
+        PowerManager powerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, getString(R.string.lock_tag));
-        mSensorManager.registerListener(sensorListener, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
 
         displayActionListener = new DisplayActionListener(this.getApplicationContext());
         displayActionListener.register(null);
+
+        broadcastReceiver = new FaceBroadcastStaticReceiver();
+        IntentFilter filter = new IntentFilter(DisplayActionListener.ACTION_SCREEN_ON);
+        filter.addAction(WatchFaceService.ACTION_REQUEST_STATE);
+        this.registerReceiver(broadcastReceiver, filter);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         boolean visible = intent.getBooleanExtra("watch_face_visible", false);
-        long timeout = (new Timeout(this)).read();
 
         if (visible) {
-            this.acquire (timeout);
+            this.acquire (intent.getLongExtra("timeout", Timeout.DEFAULT_TIMEOUT));
         } else {
             this.releaseLock();
         }
@@ -63,7 +67,7 @@ public class WakelockService extends Service {
     @Override
     public void onDestroy() {
         displayActionListener.unregister();
-        mSensorManager.unregisterListener(sensorListener);
+        this.unregisterReceiver(broadcastReceiver);
         this.releaseLock();
     }
 
@@ -82,23 +86,5 @@ public class WakelockService extends Service {
         if (wakeLock != null && wakeLock.isHeld()) {
             wakeLock.release();
         }
-    }
-
-    private class SensorListener implements SensorEventListener {
-
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-
-            float distance = event.values[0];
-            Log.d(WakelockService.class.toString(), "onSensorChanged: [" + distance + "]");
-            boolean isSomethingVeryClose = false;
-
-            if (isSomethingVeryClose) {
-                releaseLock ();
-            }
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {}
     }
 }

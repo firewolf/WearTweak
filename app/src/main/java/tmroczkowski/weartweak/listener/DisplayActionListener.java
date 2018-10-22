@@ -9,6 +9,8 @@ import android.view.Display;
 
 public class DisplayActionListener implements DisplayManager.DisplayListener {
 
+    public static String ACTION_SCREEN_ON = "tmroczkowski.weartweak.SCREEN_ON";
+
     private Context context;
 
     private DisplayManager displayManager;
@@ -36,7 +38,7 @@ public class DisplayActionListener implements DisplayManager.DisplayListener {
     }
 
     private void sendBroadcastMessage () {
-        Intent intent = new Intent("tmroczkowski.weartweak.SCREEN_ON");
+        Intent intent = new Intent(ACTION_SCREEN_ON);
         intent.putExtra("watch_face_visible", true);
 
         context.sendBroadcast(intent);

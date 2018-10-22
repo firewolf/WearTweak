@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
 
-import tmroczkowski.weartweak.listener.DisplayActionListener;
 import tmroczkowski.weartweak.preferences.Timeout;
 import tmroczkowski.weartweak.service.WakelockService;
 import tmroczkowski.weartweak.view.TimeoutRadioButtons;
